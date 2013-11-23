@@ -1,27 +1,105 @@
 <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
 <html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>eSpeak日本語デモ</title>
-  <script>
-    // This demo is licensed under the GNU GPL.
-  </script>
-  <script src="speakClient.js"></script>
-</head>
-<body>
-  <h1>eSpeak日本語デモ</h1>
-  <form onsubmit="speak(text.value, { amplitude: amplitude.value, wordgap: workdgap.value, pitch: pitch.value, speed: speed.value }); return false">
-    Text: <input type="text" name="text" size=50 value="かんじ は よみません。">
-    Amplitude: <input type="text" name="amplitude" size=5 value="100">
-    Pitch: <input type="text" name="pitch" size=5 value="50">
-    Speed: <input type="text" name="speed" size=5 value="175">
-    Word gap: <input type="text" name="workdgap" size=5 value="0">
-    <input type="submit" value="Go!">
-  </form>
-  <hr>
-  <p><a href="https://github.com/puzzlet/espeak-korean">GitHubページへ</a></p>
-
-  <div id="audio"></div>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<title>eSpeak + Igo日本語読み上げテスト</title>
+		<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet" />
+		<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css" rel="stylesheet" />
+	</head>
+	<body>
+		<div class="container">
+			<div class="header">
+				<ul class="nav nav-pills pull-right">
+					<li class="active"><a href="index.html">デモ</a></li>
+					<!--li><a href="inst.html">Simple Test</a></li>
+					<li><a href="fm.html">FM Instrument Test</a></li-->
+					<li><a href="https://github.com/logue/espeak-japanese">GitHub</a></li>
+					<li><a href="https://github.com/puzzlet/espeak-japanese">Original Code</a></li>
+					<li><a href="https://github.com/kripken/speak.js/">speak.js</a></li>
+					<li><a href="https://github.com/shogo82148/igo-javascript">igo.js</a></li>
+				</ul>
+				<h3 class="text-muted">eSpeak + Igo日本語読み上げテスト</h3>
+			</div>
+			<hr class="clearfix" />
+			<p class="alert alert-info" id="loading">読み込んでいます…。</p>
+			<div class="panel panel-primary">
+				<div class="panel-heading">eSpeak + Igo日本語読み上げデモ</div>
+				<div class="panel-body">
+					<ul>
+						<li>100% JavaScriptのみで動作します。（※IEは非対応です。）</li>
+						<li>igoを用いて漢字を平仮名に直し、speak.jsを用いて日本語をしゃべります。</li>
+						<li>あくまでも、日本語として処理するため英語が入っているとスペルを読むだけです。</li>
+						<li>数字はちゃんと読んでくれません。</li>
+					</ul>
+					<div class="form-group">
+						<label for="text">Text</label>
+						<textarea id="text" class="form-control" rows="5">昨日、近所の吉野家行ったんです。吉野家。 
+そしたらなんか人がめちゃくちゃいっぱいで座れないんです。 
+で、よく見たらなんか垂れ幕下がってて、１５０円引き、とか書いてあるんです。 
+もうね、アホかと。馬鹿かと。 
+お前らな、１５０円引き如きで普段来てない吉野家に来てんじゃねーよ、ボケが。 
+１５０円だよ、１５０円。 
+なんか親子連れとかもいるし。一家４人で吉野家か。おめでてーな。 
+よーしパパ特盛頼んじゃうぞー、とか言ってるの。もう見てらんない。 
+お前らな、１５０円やるからその席空けろと。 
+吉野家ってのはな、もっと殺伐としてるべきなんだよ。 
+Ｕの字テーブルの向かいに座った奴といつ喧嘩が始まってもおかしくない、 
+刺すか刺されるか、そんな雰囲気がいいんじゃねーか。女子供は、すっこんでろ。 
+で、やっと座れたかと思ったら、隣の奴が、大盛つゆだくで、とか言ってるんです。 
+そこでまたぶち切れですよ。 
+あのな、つゆだくなんてきょうび流行んねーんだよ。ボケが。 
+得意げな顔して何が、つゆだくで、だ。 
+お前は本当につゆだくを食いたいのかと問いたい。問い詰めたい。小１時間問い詰めたい。 
+お前、つゆだくって言いたいだけちゃうんかと。 
+吉野家通の俺から言わせてもらえば今、吉野家通の間での最新流行はやっぱり、 
+ねぎだく、これだね。 
+大盛りねぎだくギョク。これが通の頼み方。 
+ねぎだくってのはねぎが多めに入ってる。そん代わり肉が少なめ。これ。 
+で、それに大盛りギョク（玉子）。これ最強。 
+しかしこれを頼むと次から店員にマークされるという危険も伴う、諸刃の剣。 
+素人にはお薦め出来ない。 
+まあお前らド素人は、牛鮭定食でも食ってなさいってこった。 </textarea>
+					</div>
+					<div class="form-inline">
+						<div class="form-group">
+							<label for="amplitude">Amplitude</label>
+							<input type="text" class="form-control" id="amplitude" size="5" value="100" />
+						</div>
+						<div class="form-group">
+							<label for="pitch">Pitch</label>
+							<input type="text" class="form-control" id="pitch" size="5" value="50" />
+						</div>
+						<div class="form-group">
+							<label for="speed">Speed</label>
+							<input type="text" class="form-control" id="speed" size="5" value="175" />
+						</div>
+						<div class="form-group">
+							<label for="workdgap">Word gap</label>
+							<input type="text" class="form-control" id="workdgap" size="5" value="0" />
+						</div>
+						<button id="speak" class="btn btn-primary"><span class="glyphicon glyphicon-bullhorn"></span>読み上げる</button>
+					</div>
+				</div>
+			</div>
+			<footer>
+				<p>&#169; 2013 by Logue</p>
+			</footer>
+		</div>
+		<script type="text/javascript" src="//codeorigin.jquery.com/jquery-1.10.2.min.js"></script>
+		<script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="./igo.min.js"></script>
+		<script type="text/javascript" src="./zip.min.js"></script>
+		<script type="text/javascript" src="./speakClient.js"></script>
+		<script type="text/javascript" src="./speakJapanese.js"></script>
+		<script type="text/javascript" defer="defer">/*<![CDATA[*/
+$.getScript(('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js',function(){
+	try {
+		var pageTracker = _gat._getTracker("UA-33600926-1");
+		pageTracker._trackPageview();
+	} catch(err) {}
+});
+/*]]>*/</script>
+	</body>
 </html>
 

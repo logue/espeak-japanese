@@ -54,9 +54,14 @@ function speak(text, args) {
       }
       return ret;
     }
+    if (! document.getElementById('player')) {
+       var audio = document.createElement('audio');
+       audio.id = 'player';
+       document.body.appendChild(audio);
+    }
+    document.getElementById('player').src = 'data:audio/x-wav;base64,'+encode64(wav);
 
-    document.getElementById("audio").innerHTML=("<audio id=\"player\" src=\"data:audio/x-wav;base64,"+encode64(wav)+"\">");
-    document.getElementById("player").play();
+    document.getElementById('player').play();
   }
 
   function playAudioDataAPI(data) {
