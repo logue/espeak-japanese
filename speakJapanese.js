@@ -74,7 +74,7 @@ $(document).ready(function() {
 				console.log(result);
 			$(':input').removeAttr('disabled');
 		} else if(data.event=="error") {
-			$('#loading').text('エラー発生').removeClass('alert-info').addClasss('alert-danger');
+			$('#loading').text('エラー発生。リロードしてみてください。').removeClass('alert-info').addClass('alert-danger');
 		}
 	}
 

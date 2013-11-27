@@ -23,6 +23,11 @@
 			<div class="panel panel-primary">
 				<div class="panel-heading">eSpeak + Igo日本語読み上げデモ</div>
 				<div class="panel-body">
+					<div style="float:right;">
+					<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://logue.github.io/espeak-japanese/" data-count="vertical" data-via="logue256" data-lang="ja">ツイート</a>
+					<div class="g-plusone" data-size="tall" data-href="http://logue.github.io/espeak-japanese/"></div>
+					<iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Flogue.github.io%2Fespeak-japanese%2F&amp;width=70&amp;height=65&amp;colorscheme=light&amp;layout=box_count&amp;action=like&amp;show_faces=true&amp;send=true&amp;appId=249014621810580" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:70px; height:65px;" allowTransparency="true"></iframe>
+				</div>
 					<ul>
 						<li>100% JavaScriptのみで動作します。（※IEは非対応です。）</li>
 						<li>igoを用いて漢字を平仮名に直し、speak.jsを用いて日本語をしゃべります。</li>
@@ -162,7 +167,11 @@ function handleSelect(select) {
 	}
 }
 
-
+$.getScript('//connect.facebook.net/ja_JP/all.js#xfbml=1&appId=129144050466298',function(){
+	$('body').append('<div id="fb-root"></div>');
+});
+$.getScript('https://apis.google.com/js/plusone.js');
+$.getScript(('https:' == document.location.protocol ? 'https' : 'http') + '://platform.twitter.com/widgets.js');
 $.getScript(('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js',function(){
 	try {
 		var pageTracker = _gat._getTracker("UA-33600926-1");
