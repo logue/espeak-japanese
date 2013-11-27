@@ -2,7 +2,7 @@ var speakWorker;
 try {
   speakWorker = new Worker('speakWorker.js');
 } catch(e) {
-  console.log('speak.js warning: no worker support');
+  console.error('warning: no worker support');
 }
 
 function speak(text, args) {
@@ -59,7 +59,7 @@ function speak(text, args) {
        audio.id = 'player';
        document.body.appendChild(audio);
     }
-    document.getElementById('player').src = 'data:audio/x-wav;base64,'+encode64(wav);
+    document.getElementById('player').src = 'data:audio/wav;base64,'+encode64(wav);
 
     document.getElementById('player').play();
   }
