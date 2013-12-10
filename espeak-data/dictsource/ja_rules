@@ -1,12 +1,15 @@
+// Original defition by puzzlet, Modified by Logue.
 // This file is UTF8 encoded
 
-.L01 ア カ ガ サ ザ タ ダ ナ ハ バ パ マ ヤ ラ ワ ァ ャ
-.L02 イ キ ギ シ ジ チ ジ ニ ヒ ビ ピ ミ リ ヰ ィ
-.L03 ウ ク グ ス ズ ツ ヅ ヌ フ ブ プ ム ユ ル ゥ ュ
-.L04 エ ケ ゲ セ ぜ テ デ ネ ヘ ベ ペ メ レ ヱ ェ
-.L05 オ コ ゴ ソ ゾ ト ド ノ ホ ボ ポ モ ヨ ロ ヲ ォ ョ
+.L01 ア ァ カ ガ    サ ザ    タ ダ    ナ    ハ バ パ ㇵ マ    ヤ ャ ラ ㇻ ワ ヷ ヮ
+.L02 イ ィ キ ギ    シ ジ ㇱ チ ジ    ニ    ヒ ビ ピ ㇶ ミ          リ ㇼ ヰ ヸ
+.L03 ウ ゥ ク グ ㇰ ス ズ ㇲ ツ ヅ    ヌ    フ ブ プ ㇷ ム ㇺ ユ ュ ル ㇽ    ヴ
+.L04 エ ェ ケ ゲ    セ ぜ    テ デ    ネ    ヘ ベ ペ ㇸ メ          レ ㇾ ヱ ヹ
+.L05 オ ォ コ ゴ    ソ ゾ    ト ド ㇳ ノ ㇴ ホ ボ ポ ㇹ モ    ヨ ョ ロ ㇿ ヲ ヺ
 
-.L06 ア イ ウ エ オ
+// ヵとヶは読みがない
+
+.L06 ア イ ウ エ オ ァ ィ ゥ ェ ォ
 .L07 カ キ ク ケ コ
 .L08 ガ ギ グ ゲ ゴ
 .L09 サ シ ス セ ソ
@@ -22,8 +25,15 @@
 .L19 パ ピ プ ペ ポ
 .L20 マ ミ ム メ モ
 .L21 ヤ    ユ    ヨ
-.L22 ラ リ ル レ ロ
-.L23 ワ          ヲ
+.L22       ル    ロ
+.L23 ラ リ    レ
+.L24 ワ ヰ    ヱ ヲ ヮ
+.L25 ヷ ヸ ヴ ヹ ヺ
+
+.L26 ン
+
+// アイヌ語
+.L27 ㇰ ㇱ ㇲ ㇳ ㇴ ㇵ ㇶ ㇷ ㇸ ㇹ ㇺ ㇻ ㇼ ㇽ ㇾ ㇿ
 
 .replace
 // full-width hiragana
@@ -110,6 +120,7 @@
  ゃ ャ
  ゅ ュ
  ょ ョ
+ ゎ ヮ
 
 // half-width katakana
  ｱ ア
@@ -196,32 +207,28 @@
 
 .group ア
        ア      a
+       アォ    ao
 
 .group イ
        イ      i
+       イァ    ja
        イェ    je
+       イョ    jo
 
 .group ウ
        ウ      u
+       ウァ    ua
        ウィ    wi
        ウェ    we
        ウォ    wo
 
-.group ヴ
-       ヴ      vu
-       ヴァ    va
-       ヴィ    vi
-       ヴェ    ve
-       ヴォ    vo
-       ヴャ    vja
-       ヴュ    vju
-       ヴョ    vjo
-
 .group エ
        エ      e
+       エゥ    eu
 
 .group オ
        オ      o
+       オァ    oa
 
 .group カ
        カ      ka
@@ -236,7 +243,12 @@
 
 .group ク
        ク      ku
+       クァ    qua
+       クィ    qui
+       クゥ    qu
+       クェ    que
        クォ    quo
+       クヮ    kwa
 
 .group ケ
        ケ      ke
@@ -249,6 +261,8 @@
 
 .group ギ
        ギ      gi
+       ギィ    gji
+       ギェ    gje
        ギャ    gja
        ギュ    gju
        ギョ    gjo
@@ -259,6 +273,7 @@
        グィ    gui
        グェ    gue
        グォ    guo
+       グヮ    gwa
 
 .group ゲ
        ゲ      ge
@@ -266,14 +281,21 @@
 .group ゴ
        ゴ      go
 
+.group ㇰ
+       ㇰ      xku
+
+.group ヶ
+       ヶ      xke
+
 .group サ
        サ      sa
 
 .group シ
-       シ      si
-       シャ    sja
-       シュ    sju
-       ショ    sjo
+       シ      Si
+       シャ    Sa
+       シュ    Su
+       シェ    Se
+       ショ    So
 
 .group ス
        ス      su
@@ -281,23 +303,32 @@
 .group セ
        セ      se
 
+.group セ゜
+       セ゜    ce
+
 .group ソ
        ソ      so
+
+.group ㇱ
+       ㇱ      xsi
+
+.group ㇲ
+       ㇲ      xsu
 
 .group ザ
        ザ      za
 
 .group ジ
-       ジ      zi
-       ジェ    zje
-       ジャ    zja
-       ジュ    zju
-       ジョ    zjo
+       ジ      dZi
+       ジェ    dZe
+       ジャ    dZa
+       ジュ    dZu
+       ジョ    dZo
 
 .group ズ
        ズ      zu
        ズァ    zua
-       ズィ    zui
+       ズィ    zi
        ズェ    zue
        ズォ    zuo
 
@@ -305,16 +336,17 @@
        ゼ      ze
 
 .group ゾ
-       ゾ      zo
+       ゾ      dzo
 
 .group タ
        タ      ta
 
 .group チ
-       チ      tsi
-       チャ    tsja
-       チュ    tsju
-       チョ    tsjo
+       チ      tSi
+       チャ    tSa
+       チュ    tSu
+       チェ    tSe
+       チョ    tSo
 
 .group ツ
        ツ      tsu
@@ -326,10 +358,14 @@
 .group テ
        テ      te
        ティ    ti
+       テョ    tjo
 
 .group ト
        ト      to
        トゥ    tu
+
+.group ㇳ
+       ㇳ      xto
 
 .group ダ
        ダ      da
@@ -346,14 +382,22 @@
 .group デ
        デ      de
        ディ    di
+       デョ    djo
 
 .group ド
        ド      do
-       ドゥ    dou
+       ドゥ    du
+
+.group ツ゜
+       ツ゜    tu
+
+.group ト゜
+       ト゜    tu
 
 .group ナ
        ナ      na
 
+// ɲi ?
 .group ニ
        ニ      ni
        ニェ    nie
@@ -363,6 +407,10 @@
 
 .group ヌ
        ヌ      nu
+       ヌァ    nua
+       ヌィ    nui
+       ヌェ    nue
+       ヌゥ    nuu
 
 .group ネ
        ネ      ne
@@ -370,25 +418,28 @@
 .group ノ
        ノ      no
 
+.group ㇴ
+       ㇴ      xnu
+
 .group ハ
        ハ      ha
        ハ (_   wa
 
 .group ヒ
        ヒ      Ci
-       ヒェ    Cje
-       ヒャ    Cja
-       ヒュ    Cju
-       ヒョ    Cjo
+       ヒャ    Ca
+       ヒュ    Cu
+       ヒェ    Ce
+       ヒョ    Co
 
 .group フ
        フ      fu
        ファ    fa
-       フィ    fj
-       フゥ    fju
+       フィ    fi
        フェ    fe
        フォ    fo
 
+// hè
 .group ヘ
        ヘ      he
 
@@ -401,6 +452,7 @@
 .group ビ
        ビ      bi
        ビャ    bja
+       ビェ    bje
        ビュ    bju
        ビョ    bjo
 
@@ -420,6 +472,7 @@
        ピ      pi
        ピャ    pja
        ピュ    pju
+       ピェ    pje
        ピョ    pjo
 
 .group プ
@@ -431,23 +484,44 @@
 .group ポ
        ポ      po
 
+.group ㇵ
+       ㇵ      xha
+
+.group ㇶ
+       ㇶ      xhi
+
+.group ㇷ
+       ㇷ      xhu
+
+.group ㇸ
+       ㇸ      xhe
+
+.group ㇹ
+       ㇹ      xho
+
 .group マ
-       マ      Ma
+       マ      ma
 
 .group ミ
        ミ      mi
        ミャ    mja
+       ミィ    mji
        ミュ    mju
+       ミェ    mje
        ミョ    mjo
 
 .group ム
        ム      mu
 
+// mè
 .group メ
        メ      me
 
 .group モ
        モ      mo
+
+.group ㇺ
+       ㇺ      xm
 
 .group ヤ
        ヤ      ja
@@ -459,10 +533,11 @@
        ヨ      jo
 
 .group ラ
-       ラ      la
+       ラ      ra
 
 .group リ
-       リ      li
+       リ      ri
+       リィ    rji
        リェ    rje
        リャ    rja
        リュ    rju
@@ -472,10 +547,25 @@
        ル      ru
 
 .group レ
-       レ      le
+       レ      re
 
 .group ロ
-       ロ      lo
+       ロ      ro
+
+.group ㇻ
+       ㇻ      xra
+
+.group ㇼ
+       ㇼ      xri
+
+.group ㇽ
+       ㇽ      xru
+
+.group ㇾ
+       ㇾ      xre
+
+.group ㇿ
+       ㇿ      xro
 
 .group ワ
        ワ      wa
@@ -488,6 +578,28 @@
 
 .group ヲ
        ヲ      wo
+
+.group ヷ
+       ヷ      va
+
+.group ヸ
+       ヸ      vi
+
+.group ヴ
+       ヴ      vu
+       ヴァ    va
+       ヴィ    vi
+       ヴェ    ve
+       ヴォ    vo
+       ヴャ    vja
+       ヴュ    vju
+       ヴョ    vjo
+
+.group ヹ
+       ヹ      ve
+
+.group ヺ
+       ヺ      vo
 
 .group ン
        ン      N
@@ -509,7 +621,10 @@
        ッ (L20 m
        ッ (L21 j // ??
        ッ (L22 r
-       ッ (L23 w // ??
+       ッ (L23 l
+       ッ (L24 w // ??
+       ッ (L25 v // ??
+       ッ (L27 x // ??
 
 .group ー
   L01) ー      a
@@ -517,6 +632,7 @@
   L03) ー      u
   L04) ー      e
   L05) ー      o
+  L06) ー      n
 
 .group
        .

@@ -39,11 +39,10 @@ phoneme f // as in フ
   CALL zh/f
 endphoneme
 
-phoneme n"
-  // uvular nasal
-  ipa ɴ
+phoneme C // as in ヒ
+  ipa ç
   // TODO
-  CALL en/n
+  CALL zh/f
 endphoneme
 
 phoneme N // ん
@@ -81,3 +80,23 @@ phoneme N // ん
   ENDIF
 endphoneme
 
+phoneme u~
+  vowel starttype #u endtype #u
+  length 250
+  FMT(vnasal/u_n)
+endphoneme
+
+phoneme k
+  vls uvl stop
+  lengthmod 2
+  Vowelin f1=1  f2=1700 0 200  f3=-300 80 f4
+  Vowelout f1=1 f2=1700 0 200  f3=-300 80 f4 rms=30
+  WAV(ustop/k_unasp_, 75)
+endphoneme
+
+phoneme S;
+  vls pla frc sibilant
+  lengthmod 2
+  Vowelin f1=0  f2=2700 400 600  f3=300 80
+  WAV(ufric/sh_pzd2, 20)
+endphoneme
