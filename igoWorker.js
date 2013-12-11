@@ -1,8 +1,8 @@
-importScripts('igo.js', 'unzip.min.js');
+importScripts('igo.min.js', 'unzip.min.js');
 
-var tagger, dataclass = function(){}, data, ret;
+var tagger, dataclass = function(){}, data, ret, xhr;
 
-addEventListener('message', function(event){
+addEventListener("message", function(event){
 	dataclass.prototype = event.data;
 	data = new dataclass();
 	ret = {
@@ -13,11 +13,17 @@ addEventListener('message', function(event){
 	};
 
 	switch (data.method){
-		case 'setdic':
-			// キャッシュされているときは解凍処理を実行しない（効果のほどは？）
-			if (typeof(tagger) !== 'object') {
-				// data.dicにはzipファイルのarraybufferが格納されている
-				var files = {}, zip = new Zlib.Unzip(data.dic), category, wdc, unk, mtx;	// imaya氏のunzip.min.jsに変更
+		case 'init':
+			xhr = new XMLHttpRequest();
+			xhr.open('GET', data.file ? data.file : 'ipadic.zip' , true);
+			xhr.addEventListener('load', function(ev) {
+				var input = new Uint8Array(xhr.response),
+					zip = new Zlib.Unzip(input),
+					files = {},
+					category, wdc, unk, mtx;
+
+				postMessage({event:'parsing'});
+
 				zip.getFilenames().forEach(function(name, i) {
 					files[name] = zip.decompress(name);	// この実装は余計なファイルが入っていた場合ロスが多い
 				});
@@ -27,16 +33,27 @@ addEventListener('message', function(event){
 				unk = new igo.Unknown(category);
 				mtx = new igo.Matrix(files['matrix.bin']);
 				tagger = new igo.Tagger(wdc, unk, mtx);
-			}
-			ret.event = 'load';
+				postMessage({event:'ready'});
+			});
+			xhr.addEventListener('progress', function(ev){
+				postMessage({event:'loading'});
+			}, false);
+			xhr.addEventListener('error', function(ev){
+				postMessage({event:'error'});
+			}, false);
+			xhr.responseType = 'arraybuffer';
+			xhr.send();
 			break;
 		case 'parse':
+			if (typeof(tagger) !== 'object') throw 'igoWorker: Not initialized';
 			ret.morpheme = tagger.parse(data.text);
 			break;
 		case 'wakati':
-			ret.morpheme = tagger.wakati(text);
+			if (typeof(tagger) !== 'object') throw 'igoWorker: Not initialized';
+			ret.morpheme = tagger.wakati(text.text);
 			break;
 		case 'parseNBest':
+			if (typeof(tagger) !== 'object') throw 'igoWorker: Not initialized';
 			ret.morpheme = tagger.parseNBest(data.text, data.best);
 			break;
 	}

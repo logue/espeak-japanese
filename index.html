@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
 	<head>
 		<meta charset="UTF-8" />
-		<title>eSpeak + Igo日本語読み上げテスト</title>
+		<title>JavaScript日本語読み上げテスト</title>
 		<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css" rel="stylesheet" />
 	</head>
@@ -13,24 +13,22 @@
 					<li class="active"><a href="index.html">デモ</a></li>
 					<li><a href="https://github.com/logue/espeak-japanese">GitHub</a></li>
 					<li><a href="https://github.com/puzzlet/espeak-japanese">Original Code</a></li>
-					<li><a href="https://github.com/kripken/speak.js/">speak.js</a></li>
-					<li><a href="https://github.com/shogo82148/igo-javascript">igo.js</a></li>
 				</ul>
-				<h3 class="text-muted">eSpeak + Igo日本語読み上げテスト</h3>
+				<h3 class="text-muted">JavaScript日本語読み上げテスト</h3>
 			</div>
 			<hr class="clearfix" />
 			<p class="alert alert-info" id="loading">読み込んでいます…。</p>
 			<div class="panel panel-primary">
-				<div class="panel-heading">eSpeak + Igo日本語読み上げデモ</div>
+				<div class="panel-heading">JavaScript日本語読み上げデモ</div>
 				<div class="panel-body">
-					<div style="float:right;">
-					<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://logue.github.io/espeak-japanese/" data-count="vertical" data-via="logue256" data-lang="ja">ツイート</a>
-					<div class="g-plusone" data-size="tall" data-href="http://logue.github.io/espeak-japanese/"></div>
-					<iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Flogue.github.io%2Fespeak-japanese%2F&amp;width=70&amp;height=65&amp;colorscheme=light&amp;layout=box_count&amp;action=like&amp;show_faces=true&amp;send=true&amp;appId=249014621810580" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:70px; height:65px;" allowTransparency="true"></iframe>
-				</div>
+					<div class="pull-right">
+						<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://logue.github.io/espeak-japanese/" data-count="vertical" data-via="logue256" data-lang="ja">ツイート</a>
+						<div class="g-plusone" data-size="tall" data-href="http://logue.github.io/espeak-japanese/"></div>
+						<iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Flogue.github.io%2Fespeak-japanese%2F&amp;width=70&amp;height=65&amp;colorscheme=light&amp;layout=box_count&amp;action=like&amp;show_faces=true&amp;send=true&amp;appId=249014621810580" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:70px; height:65px;" allowTransparency="true"></iframe>
+					</div>
 					<ul>
-						<li>100% JavaScriptのみで動作します。（※IEは非対応です。）</li>
-						<li>igoを用いて漢字を平仮名に直し、speak.jsを用いて日本語をしゃべります。</li>
+						<li>100% JavaScriptのみで動作します。（※IEでも動きますが、すぐにメモリ不足になります。）</li>
+						<li><a href="https://github.com/shogo82148/igo-javascript">igo-js（日本語形態素解析器）</a>を用いて漢字を平仮名に直し、<a href="https://github.com/kripken/speak.js/">speak.js</a>を用いて日本語をしゃべります。</li>
 						<li>あくまでも、日本語として処理するため英語が入っているとスペルを読むだけです。</li>
 						<li>数字はちゃんと読んでくれません。</li>
 					</ul>
@@ -38,6 +36,15 @@
 						<div class="form-group">
 							<label for="files">サンプルテキスト</label>
 							<select class="form-control" id="files"><option></option></select>
+						</div>
+						<div class="form-group">
+							<label for="dict">形態素解析器</label>
+							<select id="dict" class="form-control disabled" disabled="disabled">
+								<option value="ipadic.zip" data-yomi-field-num="8">IpaDic</option>
+								<option value="jdic.zip" data-yomi-field-num="8">JDic</option>
+								<option value="jumandic.zip" data-yomi-field-num="5">JumanDic</option>
+								<option value="unidic.zip" data-yomi-field-num="9" selected="selected">UniDic</option>
+							</select>
 						</div>
 						<div class="form-group">
 							<label for="amplitude">Amplitude</label>
@@ -61,9 +68,6 @@
 						<textarea id="text" class="form-control" rows="10">上のメニューからサンプルテキストを読み込むことができます。</textarea>
 					</div>
 					<button id="speak" class="btn btn-primary"><span class="glyphicon glyphicon-bullhorn"></span> 読み上げる</button>
-					<div class="form-inline">
-						
-					</div>
 				</div>
 			</div>
 			<footer>
@@ -72,7 +76,6 @@
 		</div>
 		<script type="text/javascript" src="//codeorigin.jquery.com/jquery-1.10.2.min.js"></script>
 		<script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="./igo.min.js"></script>
 		<script type="text/javascript" src="./speakClient.js"></script>
 		<!-- 辞書の解凍に使うプログラムを圧縮されたテキストを解凍するのにも流用。 -->
 		<script type="text/javascript" src="./unzip.min.js"></script>
@@ -89,6 +92,9 @@ location.search.substr(1).split('&').forEach(function(param){
 
 $(document).ready(function(){
 	loadSample();
+	$('#dict').change(function(e){
+		
+	});
 	$('#files').change(function(e){
 		handleSelect(this);
 	});
