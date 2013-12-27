@@ -284,9 +284,6 @@
 .group ㇰ
        ㇰ      xku
 
-.group ヶ
-       ヶ      xke
-
 .group サ
        サ      sa
 
@@ -627,12 +624,13 @@
        ッ (L27 x // ??
 
 .group ー
-  L01) ー      a
-  L02) ー      i
-  L03) ー      u
-  L04) ー      e
-  L05) ー      o
-  L06) ー      n
+       ー      :
+  L01) ー      a:
+  L02) ー      i:
+  L03) ー      u:
+  L04) ー      e:
+  L05) ー      o:
+  L06) ー      n:
 
 .group
        .
