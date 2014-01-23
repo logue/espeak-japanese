@@ -23,8 +23,6 @@ var chromeVersion = (isChrome)?
 // set up a BufferSource-node
 var audioContext = new aliasedAudioContext();
 
-var source = audioContext.createBufferSource();
-
 $(document).ready(function() {
 	// 半角英数字文字列を全角文字列に変換する
 	String.prototype.toTwoByteAlphaNumeric = function(){
@@ -220,6 +218,7 @@ $(document).ready(function() {
 	}
 	
 	function playSound(streamBuffer, callback) {
+		var source = audioContext.createBufferSource();
 		source.connect(audioContext.destination);
 		// since the ended-event isn't generally implemented,
 		// we need to use the decodeAudioData()-method in order
