@@ -62090,6 +62090,11 @@ run();
   FS.createDataFile('/espeak/espeak-data/voices/en', 'en-us', en_us, true, false);
   FS.root.write = true;
   FS.ignorePermissions = false;
+  function unsignedStream(wav) {
+    var i, l= wav.length; out=new Array(l);
+    for (i = 0; i < l; i++) out[i] = unSign(wav[i], 8);
+    return out;
+  }
   var args = this['args'] || {};
   Module.arguments = [
     '-w', 'wav.wav',
@@ -62105,7 +62110,7 @@ run();
   ];
   run();
   Module.arguments.pop();
-  this['ret'] = new Uint8Array(FS.root.contents['wav.wav'].contents);
+  this['ret'] = unsignedStream(FS.root.contents['wav.wav'].contents);
   }).call(self);
   return self.ret;
 }

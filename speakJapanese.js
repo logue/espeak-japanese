@@ -1,11 +1,29 @@
-var igoWorker, speakWorker, encoderWorker, audio = new Audio();
+var igoWorker, speakWorker, PATH = document.querySelector('script[src$="speakJapanese.js"]').getAttribute('src').replace(/speakJapanese.js$/,'');
 try {
-  igoWorker = new Worker('igoWorker.js');
-  speakWorker = new Worker('speakWorker.js');
-  encoderWorker = new Worker('encoderWorker.js');
+  igoWorker = new Worker(PATH + 'igoWorker.js');
+  speakWorker = new Worker(PATH + 'speakWorker.js');
 } catch(e) {
   console.error('warning: no worker support');
 }
+
+/* Cross-Browser Web Audio API Playback With Chrome And Callbacks */
+// from http://www.masswerk.at/mespeak/
+
+// alias the Web Audio API AudioContext-object
+var aliasedAudioContext = window.AudioContext || window.webkitAudioContext;
+// ugly user-agent-string sniffing
+var isChrome = ((typeof navigator !== 'undefined') && navigator.userAgent &&
+	navigator.userAgent.indexOf('Chrome') !== -1);
+var chromeVersion = (isChrome)?
+	parseInt(
+		navigator.userAgent.replace(/^.*?\bChrome\/([0-9]+).*$/, '$1'),
+		10
+	) : 0;
+
+// set up a BufferSource-node
+var audioContext = new aliasedAudioContext();
+
+var source = audioContext.createBufferSource();
 
 $(document).ready(function() {
 	// 半角英数字文字列を全角文字列に変換する
@@ -49,16 +67,6 @@ $(document).ready(function() {
 				$('#loading').text('エラー発生').addClass('alert-danger').removeClass('alert-info');;
 				break;
 		}
-	}
-
-	function encode64(buffer) {
-		var binary = ''
-		var bytes = new Uint8Array( buffer )
-		var len = bytes.byteLength;
-		for (var i = 0; i < len; i++) {
-			binary += String.fromCharCode( bytes[ i ] )
-		}
-		return window.btoa( binary );
 	}
 
 	var YOMI_FIELD_NUM = 9;	// ipadic, jdic 8 / jumandic 5 / unidic 9
@@ -211,57 +219,54 @@ $(document).ready(function() {
 		return result;
 	}
 	
-	function parseWav(wav) {
-		function readInt(i, bytes) {
-			var ret = 0,
-				shft = 0;
-			while (bytes) {
-				ret += wav[i] << shft;
-				shft += 8;
-				i++;
-				bytes--;
+	function playSound(streamBuffer, callback) {
+		source.connect(audioContext.destination);
+		// since the ended-event isn't generally implemented,
+		// we need to use the decodeAudioData()-method in order
+		// to extract the duration to be used as a timeout-delay
+		audioContext.decodeAudioData(streamBuffer, function(audioData) {
+			// detect any implementation of the ended-event
+			// Chrome added support for the ended-event lately,
+			// but it's unreliable (doesn't fire every time)
+			// so let's exclude it.
+			if (!isChrome && source.onended !== undefined) {
+				// we could also use "source.addEventListener('ended', callback, false)" here
+				source.onended = callback;
+			} else {
+				var duration = audioData.duration;
+				// convert to msecs
+				// use a default of 1 sec, if we lack a valid duration
+				var delay = (duration)? Math.ceil(duration * 1000) : 1000;
+				setTimeout(callback, delay);
 			}
-			return ret;
+			// finally assign the buffer
+			source.buffer = audioData;
+			// start playback for Chrome >= 32
+			// please note that this would be without effect on iOS, since we're
+			// inside an async callback and iOS requires direct user interaction
+			if (chromeVersion >= 32) source.start(0);
+		},
+		function(error) { /* decoding-error-callback */ });
+			// normal start of playback, this would be essentially autoplay
+			// but is without any effect in Chrome 32
+			// let's exclude Chrome 32 and higher to avoid any double calls anyway
+			if (!isChrome || chromeVersion < 32) {
+				if (source.start) {
+					source.start(0);
+				} else {
+					source.noteOn(0);
+				}
+			}
 		}
-		if (readInt(20, 2) != 1) throw 'Invalid compression code, not PCM';
-		if (readInt(22, 2) != 1) throw 'Invalid number of channels, not 1';
-		return {
-			sampleRate: readInt(24, 4),
-			bitsPerSample: readInt(34, 2),
-			samples: wav.subarray(44)
-		};
-	}
 
 	speakWorker.onmessage = function(event) {
-		if (event.data && audio.canPlayType("audio/wav") !== '') {
-			audio.src = 'data:audio/wav;base64,'+encode64(event.data);
-			audio.play();
-		}else if (audio.canPlayType("audio/mp3")) {
-			var data = parseWav(wav);
-			encoderWorker.postMessage({ cmd: 'init', config:{
-				mode : 3,
-				channels:1,
-				samplerate: data.sampleRate,
-				bitlate: data.bitsPerSample
-				}
-			});
-			
-			encoderWorker.postMessage({ cmd: 'encode', buf: Uint8ArrayToFloat32Array(data.samples)});
-			
-			encoderWorker.onmessage = function(e) {
-				console.log(e.data.cmd);
-				if (e.data.cmd == 'data') {
-					audio.src = 'data:audio/mp3;base64,'+encode64(e.data.buf);
-					audio.play();
-				}
-			};
-			encoderWorker.postMessage({ cmd: 'finish'});
-		}else{
-			alert('Your browser seems not supported to .wav format audio.');
-		}
+		var wav = event.data,
+			buffer=new ArrayBuffer(wav.length);
+			new Uint8Array(buffer).set(wav);
+		playSound(buffer);
 	};
 
-	igoWorker.postMessage({method: 'init', file:'unidic.zip'});
+	igoWorker.postMessage({method: 'init', file:PATH + 'unidic.zip'});
 	igoWorker.addEventListener('message', function(e) {event(e.data);});
 	igoWorker.addEventListener('error', function() {event({event:'error'});});
 
