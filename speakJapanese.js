@@ -42,14 +42,36 @@ $(document).ready(function() {
 		$(':input').attr('disabled','disabled');
 		switch (data.event) {
 			case 'loading':
-				$('#loading').text('辞書をダウンロード中・・・');
+				$('#loading').
+					addClass('alert-warning').
+					removeClass('alert-danger').
+					removeClass('alert-info').
+					removeClass('alert-success').
+					text('辞書をダウンロード中・・・');
 				break;
 			case 'parsing':
-				$('#loading').text('辞書を展開中・・・');
+				$('#loading').
+					addClass('alert-info').
+					removeClass('alert-danger').
+					removeClass('alert-success').
+					removeClass('alert-warning').
+					text('辞書を展開中・・・');
 				break;
 			case 'ready':
-				$('#loading').text('準備完了').addClass('alert-success').removeClass('alert-info');
+				$('#loading').
+					addClass('alert-success').
+					removeClass('alert-danger').
+					removeClass('alert-warning').
+					removeClass('alert-info').
+					text('準備完了');
 				$(':input').not('.disabled').removeAttr('disabled');
+				
+				if (location.hash === ''){
+					$('#text').text('上のメニューからサンプルテキストを読み込むことができます。');
+				}else{
+					$('#text').text(decodeURI(location.hash.substring(1)));
+					speak($('#text').val());
+				}
 				break;
 			case 'result':
 			case 'parseNBest':
@@ -62,12 +84,17 @@ $(document).ready(function() {
 				$(':input').not('.disabled').removeAttr('disabled');
 				break;
 			case 'error':
-				$('#loading').text('エラー発生').addClass('alert-danger').removeClass('alert-info');;
+				$('#loading').
+					addClass('alert-danger').
+					removeClass('alert-info').
+					removeClass('alert-success').
+					removeClass('alert-warning').
+					text('エラー発生');
 				break;
 		}
 	}
 
-	var YOMI_FIELD_NUM = 9;	// ipadic, jdic 8 / jumandic 5 / unidic 9
+	var YOMI_FIELD_NUM = 8;	// ipadic, jdic 8 / jumandic 5 / unidic 9
 
 	function getYomi(nodes){
 		var result = '';
@@ -265,13 +292,15 @@ $(document).ready(function() {
 		playSound(buffer);
 	};
 
-	igoWorker.postMessage({method: 'init', file:PATH + 'unidic.zip'});
+	igoWorker.postMessage({method: 'init', file:PATH + 'ipadic.zip'});
 	igoWorker.addEventListener('message', function(e) {event(e.data);});
 	igoWorker.addEventListener('error', function() {event({event:'error'});});
-
+	
+	function speak(text){
+		igoWorker.postMessage({method: 'parseNBest', text: getStr(text), best: 3});
+	}
+	
 	$('#speak').click(function(){
-		
-		igoWorker.postMessage({method: 'parseNBest', text: getStr($('#text').val()), best: 3});
-		return false;
+		speak($('#text').val());
 	});
 });
