@@ -7,8 +7,8 @@
 		<meta name="description" content="espeakのJavaScript実装であるspeak.jsと、形態素解析Igo-jsを用いた日本語読み上げプログラム">
 		<meta name="keywords" content="Igo, speak.js, JS, JavaScript, espeak, Igo-js, ipadic, 日本語読み上げ, 形態素解析">
 		<meta name="author" content="Masashi Yoshikawa">
-		<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" />
-		<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css" rel="stylesheet" />
+		<link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+		<link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" rel="stylesheet" />
 	</head>
 	<body>
 		<div class="container">
@@ -31,7 +31,7 @@
 						<iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Flogue.github.io%2Fespeak-japanese%2F&amp;width=70&amp;height=65&amp;colorscheme=light&amp;layout=box_count&amp;action=like&amp;show_faces=true&amp;send=true&amp;appId=249014621810580" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:70px; height:65px;" allowTransparency="true"></iframe>
 					</div>
 					<ul>
-						<li>100% JavaScriptのみで動作します。（※IEでも動きますが、すぐにメモリ不足になります。）</li>
+						<li>100% JavaScriptのみで動作します。（※IEでも動きますが、<a href="https://github.com/g200kg/WAAPISim">WAAPISim</a>でAudioContextをエミュレートしているので重いです。）</li>
 						<li><a href="https://github.com/shogo82148/igo-javascript">igo-js（日本語形態素解析器）</a>を用いて漢字を平仮名に直し、<a href="https://github.com/logue/speak.js/">speak.js</a>を用いて日本語をしゃべります。</li>
 						<li>あくまでも、日本語として処理するため英語が入っているとスペルを読むだけです。</li>
 						<li>数字はちゃんと読んでくれません。</li>
@@ -79,11 +79,12 @@
 				</div>
 			</div>
 			<footer>
-				<p>&#169; 2013 by Logue</p>
+				<p>&#169; 2013,2016 by Logue</p>
 			</footer>
 		</div>
-		<script type="text/javascript" src="//codeorigin.jquery.com/jquery-2.1.1.min.js"></script>
-		<script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+		<script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="./waapisim.min.js"></script>
 		<script type="text/javascript" src="./speakClient.js"></script>
 		<!-- 辞書の解凍に使うプログラムを圧縮されたテキストを解凍するのにも流用。 -->
 		<script type="text/javascript" src="./unzip.min.js"></script>
